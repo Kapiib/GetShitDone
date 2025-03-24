@@ -1,0 +1,310 @@
+/* Modern Todo App Styling with Purple Theme */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+:root {
+  --primary: #764abc;
+  --primary-light: #b892ff;
+  --accent: #42caff;
+  --dark: #121212;
+  --light: #f8f9fa;
+  --grey: #94a3b8;
+  --danger: #f87171;
+  --success: #10b981;
+}
+
+body {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: var(--light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(118, 74, 188, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(184, 146, 255, 0.15);
+  padding: 1rem 2rem;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar ul li {
+  margin-right: 20px;
+}
+
+.navbar ul li:first-child {
+  flex-grow: 2;
+  text-align: left;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: var(--light);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar ul li a:hover {
+  color: var(--primary-light);
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 6rem auto 2rem;
+  padding: 0 1rem;
+}
+
+.todos-container {
+  background-color: rgba(118, 74, 188, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 12px;
+  border: 1px solid rgba(184, 146, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.todo-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(184, 146, 255, 0.08);
+}
+
+.todo-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.todo-item.completed {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.todo-item.completed .todo-content h4 {
+  text-decoration: line-through;
+  color: var(--grey);
+}
+
+.todo-content {
+  flex: 1;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-btn, .delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn {
+  background: rgba(118, 74, 188, 0.2);
+}
+
+.toggle-btn:hover {
+  background: rgba(118, 74, 188, 0.3);
+}
+
+.delete-btn {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+.delete-btn:hover {
+  background: rgba(248, 113, 113, 0.3);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+input, textarea, button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(184, 146, 255, 0.15);
+  color: var(--light);
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.btn-add {
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(118, 74, 188, 0.25);
+}
+
+.btn-add:hover {
+  background: rgba(118, 74, 188, 0.9);
+  transform: translateY(-2px);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(30, 41, 59, 0.95);
+  margin: 15% auto;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  animation: modalFade 0.3s;
+  border: 1px solid rgba(184, 146, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes modalFade {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-content h3 {
+  color: var(--light);
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.modal-content p {
+  color: var(--grey);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancel, .btn-delete {
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+  transition: all 0.3s ease;
+  width: auto;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--light);
+}
+
+.btn-delete {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-delete:hover {
+  background: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(248, 113, 113, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .date-jump-form .form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .todo-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .todo-actions {
+    margin-top: 1rem;
+    align-self: flex-end;
+  }
+}
+
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}

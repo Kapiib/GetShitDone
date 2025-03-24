@@ -1,0 +1,16 @@
+<div class="navbar">
+    <ul>
+        <li><a href="/">Home</a></li>
+
+        <% if (user) { %>
+            <!-- Show these links when user is logged in -->
+            <li><a href="/todos">Tasks</a></li>
+            <li><a href="/api/profile">Profile</a></li>
+            <li><a href="/auth/logout">Logout</a></li>
+        <% } else { %>
+            <!-- Show these links when user is NOT logged in -->
+            <li><a href="/auth/login">Login</a></li>
+            <li><a href="/auth/register">Register</a></li>
+        <% } %>
+    </ul>
+</div>

@@ -1,0 +1,20 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/purple-theme.css">
+    <script>
+        // Save scroll position before form submission or page actions
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('scrollPosition', window.scrollY);
+        });
+        
+        // Restore scroll position on page load
+        window.addEventListener('load', function() {
+            if(localStorage.getItem('scrollPosition')) {
+                window.scrollTo(0, localStorage.getItem('scrollPosition'));
+                localStorage.removeItem('scrollPosition');
+            }
+        });
+    </script>
+</head>

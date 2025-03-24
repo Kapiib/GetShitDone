@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head.ejs') %>
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="profile-container">
+        <h1>Welcome to your profile, <%= user.name %></h1>
+        
+        <div class="profile-info">
+            <p><strong>Email:</strong> <%= user.email %></p>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/todos" class="btn-primary">View My Tasks</a>
+        </div>
+    </div>
+
+</body>
+</html>

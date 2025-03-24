@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/todos.css">
+<body>
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="todos-container">
+        <div class="todos-header">
+            <div class="date-navigation">
+                <a href="/todos?date=<%= previousDate %>" class="date-nav-btn">&lt;</a>
+                <h2><%= formatDate(currentDate) %></h2>
+                <a href="/todos?date=<%= nextDate %>" class="date-nav-btn">&gt;</a>
+            </div>
+
+            <div class="date-picker">
+                <form action="/todos" method="GET" class="date-jump-form" id="dateJumpForm">
+                    <div class="form-group">
+                        <label for="jumpDate">Go to date:</label>
+                        <input type="date" id="jumpDate" name="date" value="<%= currentDate %>" onchange="this.form.submit();">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="todos-form">
+            <h3>Add new task</h3>
+            <form action="/todos" method="POST">
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Task title" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="description" placeholder="Description (optional)"></textarea>
+                </div>
+                <input type="hidden" name="dueDate" value="<%= currentDate %>">
+                <button type="submit" class="btn-add">Add Task</button>
+            </form>
+        </div>
+
+        <div class="todos-list">
+            <% if (todos.length === 0) { %>
+                <div class="no-todos">No tasks for this day</div>
+            <% } else { %>
+                <% todos.forEach(todo => { %>
+                    <div class="todo-item <%= todo.completed ? 'completed' : '' %>" id="todo-<%= todo._id %>">
+                        <div class="todo-content">
+                            <h4><%= todo.title %></h4>
+                            <% if (todo.description) { %>
+                                <p><%= todo.description %></p>
+                            <% } %>
+                        </div>
+                        <div class="todo-actions">
+                            <button class="toggle-btn" data-id="<%= todo._id %>" data-completed="<%= todo.completed %>">
+                                <%= todo.completed ? '↩️' : '✓' %>
+                            </button>
+                            <button class="delete-btn" data-id="<%= todo._id %>">🗑️</button>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </div>
+
+    <input type="hidden" id="currentDate" value="<%= currentDate %>">
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this task?</p>
+            <div class="modal-buttons">
+                <button id="cancelDelete" class="btn-cancel">Cancel</button>
+                <button id="confirmDelete" class="btn-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/todoManager.js"></script>
+</body>
+</html>
