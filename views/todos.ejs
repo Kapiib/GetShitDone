@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('partials/head.ejs') %>
-    <link rel="stylesheet" href="/css/todos.css">
 <body>
     <%- include('partials/navbar.ejs') %>
 
@@ -16,7 +15,7 @@
             <div class="date-picker">
                 <form action="/todos" method="GET" class="date-jump-form" id="dateJumpForm">
                     <div class="form-group">
-                        <label for="jumpDate">Go to date:</label>
+                        <label for="jumpDate">Date:</label>
                         <input type="date" id="jumpDate" name="date" value="<%= currentDate %>" onchange="this.form.submit();">
                     </div>
                 </form>

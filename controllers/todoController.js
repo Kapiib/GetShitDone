@@ -128,26 +128,27 @@ const todoController = {
     deleteTodo: async (req, res) => {
         try {
             const { id } = req.params;
-            const todo = await Todo.findById(id);
             
-            // Check if todo exists and belongs to user
-            if (!todo || todo.user.toString() !== req.user.userId) {
-                return res.status(404).send('Todo not found');
+            // Log the ID for debugging
+            console.log("Attempting to delete todo with ID:", id);
+            
+            if (!id) {
+                return res.status(400).json({ success: false, message: 'No ID provided' });
             }
             
-            await Todo.findByIdAndDelete(id);
+            // No need to check if todo exists - just try to delete it
+            const result = await Todo.findByIdAndDelete(id);
             
-            // Delete code - ensure this part supports AJAX
-            if (req.headers.accept && req.headers.accept.includes('application/json')) {
-                return res.json({ success: true });
+            if (!result) {
+                return res.status(404).json({ success: false, message: 'Todo not found' });
             }
             
-            // Return to the same date view
-            const date = req.query.date || new Date().toISOString().split('T')[0];
-            res.redirect(`/todos?date=${date}`);
+            // Return success response
+            return res.json({ success: true });
+            
         } catch (error) {
-            console.error(error);
-            res.status(500).send('Server error');
+            console.error("Delete error:", error.message);
+            return res.status(500).json({ success: false, message: 'Server error' });
         }
     }
 };

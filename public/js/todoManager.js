@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close modal when cancel button is clicked
     if (document.getElementById('cancelDelete')) {
         document.getElementById('cancelDelete').addEventListener('click', function() {
+            modal.classList.remove('show');
             modal.style.display = 'none';
         });
     }
@@ -111,38 +112,73 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showDeleteModal() {
         todoToDelete = this.getAttribute('data-id');
-        modal.style.display = 'block';
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        console.log("Delete modal shown for todo:", todoToDelete);
     }
 
     // Delete confirmation
     if (document.getElementById('confirmDelete')) {
-        document.getElementById('confirmDelete').addEventListener('click', async function() {
-            if (todoToDelete) {
-                try {
-                    const response = await fetch(`/todos/delete/${todoToDelete}?date=${currentDate}`, {
-                        method: 'DELETE',
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    
-                    if (response.ok) {
-                        // Remove todo from UI
-                        document.getElementById(`todo-${todoToDelete}`).remove();
-                        
-                        // Check if we need to show the "no todos" message
-                        if (todosList.children.length === 0) {
-                            todosList.innerHTML = '<div class="no-todos">No tasks for this day</div>';
-                        }
-                        
-                        // Hide the modal
-                        modal.style.display = 'none';
-                    } else {
-                        alert('There was an error deleting the task.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
+        document.getElementById('confirmDelete').addEventListener('click', deleteTodo);
+    }
+
+    // Update your deleteTodo function in todoManager.js
+    async function deleteTodo() {
+        if (!todoToDelete) return;
+        
+        try {
+            // Close the modal immediately for better UX
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            
+            console.log("Attempting to delete todo:", todoToDelete);
+            
+            // Try the correct route - adjust this if necessary!
+            // If your route is /todos/delete/:id
+            const response = await fetch(`/todos/delete/${todoToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
+            });
+            
+            // For debugging - log raw response
+            console.log("Raw response status:", response.status);
+            
+            // Parse response and check status
+            let data;
+            try {
+                data = await response.json();
+                console.log("Response data:", data);
+            } catch (e) {
+                console.error("Error parsing JSON response:", e);
+                data = { success: false, message: "Invalid response from server" };
             }
-        });
+            
+            if (response.ok && data.success) {
+                console.log("Delete successful!");
+                // Remove todo from UI
+                const todoElement = document.getElementById(`todo-${todoToDelete}`);
+                if (todoElement) {
+                    todoElement.remove();
+                    
+                    // Check if we need to show the "no todos" message
+                    if (todosList.querySelectorAll('.todo-item').length === 0) {
+                        todosList.innerHTML = '<div class="no-todos">No tasks for this day</div>';
+                    }
+                } else {
+                    console.error("Could not find todo element with ID:", `todo-${todoToDelete}`);
+                }
+            } else {
+                // Show the error in the UI
+                console.error("Server error:", data);
+                const errorMessage = data?.message || "Unknown error";
+                alert(`Error deleting task: ${errorMessage}`);
+            }
+        } catch (error) {
+            console.error('Client error:', error);
+            alert('Network error. Please check your connection and try again.');
+        }
     }
 
     // Helper function to create a new todo element
