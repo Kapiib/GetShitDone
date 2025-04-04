@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Self-hHsted Runner
+    name: Deploy to Self-hosted Runner
     runs-on: self-hosted
 
 
