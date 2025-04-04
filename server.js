@@ -30,7 +30,7 @@ app.use("/auth", authRoutes);
 app.use("/todos", todoRoutes); 
 
 // port
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Running on port http://localhost:${PORT}`);
 });
